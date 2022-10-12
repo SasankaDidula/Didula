@@ -76,7 +76,6 @@ def emotionImage():
             img.save('new.jpeg')
             ff = facefeature()
             val = ff.predictImage('new.jpeg')
-            print("Error : " + val)
             return {'data' : val}
         except Exception as e:
             return {'data': 'An Error Occurred during fetching Api : '+ str(e)},
@@ -93,22 +92,16 @@ def emotionTest():
 class facefeature():
     def predictImage(self, y):
         try:
-          print("Step 1")
           Filepath = "mysite/Data/"
           cascPath= Filepath+"abc.xml"
           emotion_model = "mysite/Data/Emotion.hdf5"
-          print("Step 2")
           model = load_model(emotion_model, compile=compile)
-          print("Step 3")
           PADDING = 40
           faceCascade = cv2.CascadeClassifier(cascPath)
           emotion_labels = self.get_labels()
-          print("Step 2.1")
           img = cv2.imread("new.jpeg")
-          print("Step 2.2")
           gray_image_array = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
           gray_img = self.pad(gray_image_array)
-          print("Step 3")
 
           emotions = []
           faces = faceCascade.detectMultiScale(
@@ -118,7 +111,6 @@ class facefeature():
                   minSize=(30, 30))
           if len(faces) == 1:
                     gray_img = self.pad(gray_image_array)
-                    print("Step 4")
                     for face_coordinates in faces:
                         face_coordinates = self.tosquare(face_coordinates)
                         x1, x2, y1, y2 = self.apply_offsets(face_coordinates)
@@ -141,12 +133,8 @@ class facefeature():
                       gray_face = cv2.resize(gray_face, model.input_shape[1:3])
                     except Exception as e:
                       print("Cannot resize "+str(e))
-                    print("Step 5")
                     gray_face = np.expand_dims(np.expand_dims(gray_face, 0), -1)
-                    print("ready to predict")
                     emotion_prediction = model.predict(gray_face)[0]
-                    print("predicted")
-                    print(emotion_prediction)
                     labelled_emotions = {
                         emotion_labels[idx]: round(float(score), 2)
                         for idx, score in enumerate(emotion_prediction)
