@@ -2,4 +2,4 @@ gunicorn
 flask
 tensorflow-cpu
 sklearn
-cv2
+opencv-python
