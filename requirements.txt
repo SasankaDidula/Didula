@@ -1,5 +1,6 @@
 dill==0.3.5.1
 Flask==2.2.2
+gunicorn==20.1.0
 keras==2.10.0
 Keras-Preprocessing==1.1.2
 numpy==1.23.4
